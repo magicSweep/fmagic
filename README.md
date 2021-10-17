@@ -1,5 +1,7 @@
 # Helper functions for functional programming
 
-## Build
+## Build and publish
 
-- for publish, first commit all changes, then run $ npm run build:lib then $ npm run release
+- commit and push changes
+- run $ npm run build:lib
+- run $ npm run release
