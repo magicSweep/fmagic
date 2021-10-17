@@ -6,7 +6,7 @@
   "scripts": {
     "test": "node ./node_modules/.bin/jest",
     "tsc": "node ./node_modules/.bin/tsc",
-    "release": "np --branch=main --yolo --no-yarn --no-2fa --contents=dist",
+    "release": "np --branch=main --yolo --no-yarn --no-2fa",
     "build:lib": "cross-env NODE_ENV=\"production\" rm -rf dist && tsc --project tsconfig.lib.json",
     "build:libbbb": "cross-env NODE_ENV=\"production\" rm -rf dist && tsc --project tsconfig.lib.json && npm run copy:files",
     "copy:files": "copyfiles -f src/styles/** dist/styles && copyfiles -f src/theme/merge/merge.js dist/theme && copyfiles -f src/theme/merge/helper.js dist/theme"
