@@ -1,13 +1,13 @@
 export const compose =
-  <T>(...funcs: any[]) =>
-  (val?: T) =>
+  <T, U>(...funcs: any[]) =>
+  (val?: T): U =>
     funcs.reduce((acc, f) => {
       return f(acc);
     }, val);
 
 export const cond =
-  <T>(conditions: any[]) =>
-  (val?: any) => {
+  <T, U>(conditions: any[]) =>
+  (val?: T): U | undefined => {
     for (let i = 0; i < conditions.length; i++) {
       if (conditions[i][0](val) === true) {
         return conditions[i][1](val);
@@ -17,11 +17,11 @@ export const cond =
 
 export const elif =
   <T, U>(
-    condFunc: (val: T) => boolean,
-    ifFunc: (val: T) => U,
-    elseFunc: (val: T) => U
+    condFunc: (val?: T) => boolean,
+    ifFunc: (val?: T) => U,
+    elseFunc: (val?: T) => U
   ) =>
-  (val: T) => {
+  (val?: T): U => {
     if (condFunc(val) === true) {
       return ifFunc(val);
     } else {
@@ -29,7 +29,7 @@ export const elif =
     }
   };
 
-export const justReturn = (param: any) => param;
+export const justReturn = <T>(param: T) => param;
 
 export const push = (val: any) => (arr: any[]) => [...arr, val];
 
