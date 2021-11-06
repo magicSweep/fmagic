@@ -1,4 +1,4 @@
-import { isFunction } from "lodash-es";
+//import { isFunction } from "lodash-es";
 
 // NOT IMMUTABLE
 export class NI_Box<T> {
@@ -182,7 +182,7 @@ export class IO {
   effect: any;
 
   constructor(effect: any) {
-    if (isFunction(effect)) {
+    if (typeof effect !== "function") {
       throw "IO Usage: function required";
     }
     this.effect = effect;
