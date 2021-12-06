@@ -82,7 +82,9 @@ export class NI_Next<T> {
   fold = (done: any, next: any) => next(this._value);
 
   concat = (other: any) =>
-    other.isDone ? other : Next.of((this._value as any).concat(other.value));
+    other.__IS_DONE === true
+      ? other
+      : Next.of((this._value as any).concat(other.value));
 }
 
 export class Next<T> {
@@ -110,7 +112,9 @@ export class Next<T> {
   fold = (done: any, next: any) => next(this._value);
 
   concat = (other: any) =>
-    other.isDone ? other : Next.of((this._value as any).concat(other.value));
+    other.__IS_DONE === true
+      ? other
+      : Next.of((this._value as any).concat(other.value));
 }
 
 export class DoneWithError {
