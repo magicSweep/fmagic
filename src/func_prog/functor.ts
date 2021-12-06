@@ -24,7 +24,7 @@ export class NI_Box<T> {
   flat = (f: (val: T) => any) => f(this._value);
 }
 
-export class Validation {
+/* export class Validation {
   _value: any; // validate function (key, val) => Fail | Success
 
   get run() {
@@ -51,13 +51,13 @@ export class Validation {
 
       return res.concat(other._value(key, x));
     });
-}
+} */
 
 export class NI_Next<T> {
   _value: T;
   _res: any;
 
-  isDone = false;
+  __IS_DONE = false;
 
   get value() {
     return this._value;
@@ -89,7 +89,7 @@ export class Next<T> {
   _value: T;
   _res: any;
 
-  isDone = false;
+  __IS_DONE = false;
 
   get value() {
     return this._value;
@@ -116,7 +116,7 @@ export class Next<T> {
 export class DoneWithError {
   _value: any;
 
-  isDone = true;
+  __IS_DONE = true;
 
   get value(): any {
     return (this as Done)._value;
@@ -135,11 +135,11 @@ export class DoneWithError {
 
   chain = (...args: any): Done => this;
 
-  then = (...args: any): Done => this;
+  //then = (...args: any): Done => this;
 
-  catch = (...args: any): Done => this;
+  //catch = (...args: any): Done => this;
 
-  finally = (...args: any): Done => this;
+  //finally = (...args: any): Done => this;
 
   flat = (f: any): Done => f(this._value);
 
@@ -151,7 +151,7 @@ export class DoneWithError {
 export class Done {
   _value: any;
 
-  isDone = true;
+  __IS_DONE = true;
 
   get value() {
     return (this as Done)._value;
@@ -167,9 +167,9 @@ export class Done {
 
   chain = (...args: any): Done => this;
 
-  then = (...args: any): Done => this;
+  //then = (...args: any): Done => this;
 
-  catch = (...args: any): Done => this;
+  //catch = (...args: any): Done => this;
 
   flat = (f: any): Done => f(this._value);
 
