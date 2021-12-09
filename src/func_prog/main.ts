@@ -1,3 +1,5 @@
+import { Done } from "./functor";
+
 export const compose =
   <T, U>(...funcs: any[]) =>
   (val?: T): U =>
@@ -78,8 +80,43 @@ export const mappedLog = (tag: string) => (value: any) => {
   return value;
 };
 
-export const then = (f: any) => (thenable: any) => thenable.then(f);
+export const then = (f: any) => (thenable: any) => {
+  //console.log("THENABLE-------", thenable);
+  if (thenable instanceof Done === true) return thenable;
+
+  return thenable.then(f);
+};
+
+export const thenDoneFlat = (f: any) => (thenable: any) => {
+  //console.log("THENABLE-------", thenable);
+  if (thenable instanceof Done === true) return f(thenable);
+
+  return thenable.then(f);
+};
+
+export const _catch = (f: any) => (thenable: any) => {
+  //console.log("THENABLE-------", thenable);
+  if (thenable instanceof Done === true) return thenable;
+
+  return thenable.catch(f);
+};
 
 export const _finally = (f: any) => (thenable: any) => thenable.finally(f);
 
-export const _catch = (f: any) => (catchable: any) => catchable.catch(f);
+//export const _catch = (f: any) => (catchable: any) => catchable.catch(f);
+
+export const tryCatch = (_try: any, _catch: any) => (val?: any) => {
+  try {
+    return _try(val);
+  } catch (err) {
+    return _catch(err);
+  }
+};
+
+export const tryCatchAsync = (_try: any, _catch: any) => async (val?: any) => {
+  try {
+    return await _try(val);
+  } catch (err) {
+    return _catch(err);
+  }
+};
