@@ -75,6 +75,16 @@ export class NI_Next<T> {
     return this;
   };
 
+  /* export const tap = (f: any) => (data: any) => {
+  f(data);
+  return data;
+}; */
+
+  tap = (f: any) => {
+    f(this._value);
+    return this;
+  };
+
   chain = (f: any) => f(this._value);
 
   flat = (f: any) => f(this._value);
@@ -104,6 +114,11 @@ export class Next<T> {
   static of = <T>(value: T) => new Next(value);
 
   map = (f: any): any => Next.of(f(this._value));
+
+  tap = (f: any) => {
+    f(this._value);
+    return this;
+  };
 
   chain = (f: any) => f(this._value);
 
@@ -137,6 +152,8 @@ export class DoneWithError {
 
   map = (...args: any): Done => this;
 
+  tap = (...args: any): Done => this;
+
   chain = (...args: any): Done => this;
 
   //then = (...args: any): Done => this;
@@ -168,6 +185,8 @@ export class Done {
   static of = (value: any) => new Done(value);
 
   map = (...args: any): Done => this;
+
+  tap = (...args: any): Done => this;
 
   chain = (...args: any): Done => this;
 
