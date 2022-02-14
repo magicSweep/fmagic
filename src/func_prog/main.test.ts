@@ -1,4 +1,6 @@
-import { cond, compose } from "./main";
+import { cond, compose, map, then, chain, thenDoneFold, _catch } from "./main";
+import wait from "waait";
+import { NI_Next, Done } from "./functor";
 
 describe("compose", () => {
   test("", () => {
@@ -56,6 +58,47 @@ describe("cond", () => {
     expect(third).toHaveBeenCalledTimes(0);
 
     expect(res).toEqual("Hello, wife Anna");
+  });
+});
+
+describe.only("async", () => {
+  const double = async (val: number) => {
+    await wait(100);
+
+    if (val === 5) throw new Error("I HATE FIVE....");
+
+    return val * 2;
+  };
+
+  test("", async () => {
+    const f = compose(
+      (val: number) => (val === 9 ? Done.of("WE GOT NINE") : NI_Next.of(val)),
+      chain(
+        compose(
+          double,
+          then(NI_Next.of),
+          _catch((err: any) => Done.of(err.message))
+        )
+      ),
+      then(
+        chain((val: any) =>
+          val > 10 ? Done.of("More then ten") : NI_Next.of(val)
+        )
+      ),
+      then(map((val: any) => val + 1)),
+      thenDoneFold(
+        (val: any) => `DONE WITH VALUE | ${val}`,
+        (val: any) => `NEXT RESULT | ${val}`
+      )
+    );
+
+    expect(await f(9)).toEqual("DONE WITH VALUE | WE GOT NINE");
+
+    expect(await f(12)).toEqual("DONE WITH VALUE | More then ten");
+
+    expect(await f(5)).toEqual("DONE WITH VALUE | I HATE FIVE....");
+
+    expect(await f(2)).toEqual("NEXT RESULT | 5");
   });
 });
 

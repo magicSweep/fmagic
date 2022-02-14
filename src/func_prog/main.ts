@@ -94,6 +94,13 @@ export const thenDoneFlat = (f: any) => (thenable: any) => {
   return thenable.then(f);
 };
 
+export const thenDoneFold = (done: any, next: any) => (thenable: any) => {
+  //console.log("THENABLE-------", thenable);
+  if (thenable instanceof Done === true) return thenable.fold(done, next);
+
+  return thenable.then((container: any) => container.fold(done, next));
+};
+
 export const _catch = (f: any) => (thenable: any) => {
   //console.log("THENABLE-------", thenable);
   if (thenable instanceof Done === true) return thenable;
