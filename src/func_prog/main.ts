@@ -19,11 +19,11 @@ export const cond =
 
 export const elif =
   <T, U>(
-    condFunc: (val?: T) => boolean,
-    ifFunc: (val?: T) => U,
-    elseFunc: (val?: T) => U
+    condFunc: (val: T) => boolean,
+    ifFunc: (val: T) => U,
+    elseFunc: (val: T) => U
   ) =>
-  (val?: T): U => {
+  (val: T): U => {
     if (condFunc(val) === true) {
       return ifFunc(val);
     } else {

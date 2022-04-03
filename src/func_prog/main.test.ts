@@ -1,4 +1,14 @@
-import { cond, compose, map, then, chain, thenDoneFold, _catch } from "./main";
+import {
+  cond,
+  compose,
+  map,
+  then,
+  chain,
+  thenDoneFold,
+  _catch,
+  tryCatch,
+  justReturn,
+} from "./main";
 import wait from "waait";
 import { NI_Next, Done } from "./functor";
 
@@ -61,7 +71,52 @@ describe("cond", () => {
   });
 });
 
-describe.only("async", () => {
+describe("tryCatch", () => {
+  test("", async () => {
+    const exeptionFunc = (isThrow: boolean) => {
+      if (isThrow === false) return 34;
+      throw new Error("Some fat error...");
+    };
+
+    const getSome = (val: any) => Promise.resolve(val + 24);
+
+    const func = compose<boolean, any>(
+      tryCatch(
+        (isThrow: boolean) => NI_Next.of(exeptionFunc(isThrow)),
+        (err: any) =>
+          Done.of({
+            error: err,
+          })
+      ),
+
+      chain((val: number) => getSome(val)),
+
+      then(NI_Next.of),
+
+      then(
+        chain((val: number) => {
+          return NI_Next.of({
+            result: val,
+          });
+        })
+      ),
+
+      _catch((error: any) => Done.of({ error })),
+
+      thenDoneFold(justReturn, justReturn)
+    );
+
+    let res = await func(true);
+
+    expect(res.error.toString()).toEqual("Error: Some fat error...");
+
+    res = await func(false);
+
+    expect(res).toEqual({ result: 58 });
+  });
+});
+
+describe("async", () => {
   const double = async (val: number) => {
     await wait(100);
 
