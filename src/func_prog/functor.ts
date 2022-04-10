@@ -59,6 +59,10 @@ export class NI_Next<T> {
 
   __IS_DONE = false;
 
+  get isDone() {
+    return this.__IS_DONE;
+  }
+
   get value() {
     return this._value;
   }
@@ -67,10 +71,10 @@ export class NI_Next<T> {
     this._value = val;
   }
 
-  static of = <T>(value: T) => new Next(value);
+  static of = <T>(value: T) => new NI_Next(value);
 
   //map = (f: any): any => Next.of(f(this._value));
-  map = (f: (val: T) => any): NI_Box<T> => {
+  map = (f: (val: T) => any): NI_Next<T> => {
     this._value = f(this._value);
     return this;
   };
@@ -94,7 +98,7 @@ export class NI_Next<T> {
   concat = (other: any) =>
     other.__IS_DONE === true
       ? other
-      : Next.of((this._value as any).concat(other.value));
+      : NI_Next.of((this._value as any).concat(other.value));
 }
 
 export class Next<T> {
@@ -102,6 +106,10 @@ export class Next<T> {
   _res: any;
 
   __IS_DONE = false;
+
+  get isDone() {
+    return this.__IS_DONE;
+  }
 
   get value() {
     return this._value;
@@ -136,6 +144,10 @@ export class DoneWithError {
   _value: any;
 
   __IS_DONE = true;
+
+  get isDone() {
+    return this.__IS_DONE;
+  }
 
   get value(): any {
     return (this as Done)._value;
@@ -173,6 +185,10 @@ export class Done {
   _value: any;
 
   __IS_DONE = true;
+
+  get isDone() {
+    return this.__IS_DONE;
+  }
 
   get value() {
     return (this as Done)._value;

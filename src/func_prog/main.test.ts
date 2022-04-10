@@ -8,6 +8,7 @@ import {
   _catch,
   tryCatch,
   justReturn,
+  toOne,
 } from "./main";
 import wait from "waait";
 import { NI_Next, Done } from "./functor";
@@ -154,6 +155,47 @@ describe("async", () => {
     expect(await f(5)).toEqual("DONE WITH VALUE | I HATE FIVE....");
 
     expect(await f(2)).toEqual("NEXT RESULT | 5");
+  });
+});
+
+describe("toOne", () => {
+  test("If we have no Done, we get Next with data of all Next in array", () => {
+    const res = toOne([
+      NI_Next.of({ hello: "hello" }),
+      NI_Next.of({ bye: "bye" }),
+    ]);
+
+    expect(res.isDone).toEqual(false);
+    expect(res.value).toEqual({ bye: "bye", hello: "hello" });
+  });
+
+  test("If we have just one Done, we return Done with data of all Next or Done in array", () => {
+    const res = toOne([
+      NI_Next.of({ hello: "hello" }),
+      Done.of({ error: "error" }),
+    ]);
+
+    expect(res.isDone).toEqual(true);
+    expect(res.value).toEqual({ error: "error", hello: "hello" });
+  });
+
+  test("", () => {
+    const res = toOne([
+      NI_Next.of({ hello: "hello" }),
+      Done.of(23),
+      NI_Next.of("error"),
+      NI_Next.of(true),
+    ]);
+
+    expect(res.isDone).toEqual(true);
+    expect(res.value).toEqual({
+      "0": "e",
+      "1": "r",
+      "2": "r",
+      "3": "o",
+      "4": "r",
+      hello: "hello",
+    });
   });
 });
 

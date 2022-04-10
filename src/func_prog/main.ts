@@ -1,4 +1,4 @@
-import { Done } from "./functor";
+import { Done, NI_Next } from "./functor";
 
 export const compose =
   <T, U>(...funcs: any[]) =>
@@ -126,4 +126,20 @@ export const tryCatchAsync = (_try: any, _catch: any) => async (val?: any) => {
   } catch (err) {
     return _catch(err);
   }
+};
+
+//
+export const toOne = (
+  functors: (Done | NI_Next<any>)[]
+): Done | NI_Next<any> => {
+  let isDone: boolean = false;
+  let data: any = {};
+
+  for (let functor of functors) {
+    if (functor.isDone === true) isDone = true;
+
+    data = { ...data, ...functor.value };
+  }
+
+  return isDone === true ? Done.of(data) : NI_Next.of(data);
 };
