@@ -1,4 +1,4 @@
-import { intersection } from "lodash";
+import { intersection } from "lodash-es";
 
 // PHOTO
 export const aspectRatio = (width: number, height: number) => {
@@ -126,8 +126,10 @@ export const regexMsg = (
 
 // FUNCTIONAL PROGRAMMING
 
-export const compose = (...fns: any[]) => (x: any) =>
-  fns.reduce((y, f) => f(y), x); // fns.reduceRight((y, f) => f(y), x);
+export const compose =
+  (...fns: any[]) =>
+  (x: any) =>
+    fns.reduce((y, f) => f(y), x); // fns.reduceRight((y, f) => f(y), x);
 
 export const trace = (label: string) => (value: any) => {
   console.log(`${label}: ${JSON.stringify(value)}`);

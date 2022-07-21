@@ -37,21 +37,21 @@ describe("compose", () => {
 });
 
 describe("cond", () => {
+  const firstIf = jest.fn((name) => name === "Fred");
+  const secondIf = jest.fn((name) => name === "Anna");
+  const thirdIf = jest.fn((name) => name === "Brut");
+
+  const first = jest.fn((name) => `Hello, admin Fred`);
+  const second = jest.fn((name) => `Hello, wife Anna`);
+  const third = jest.fn((name) => `Hello, fucking Freak`);
+
+  const run = cond([
+    [firstIf, first],
+    [secondIf, second],
+    [thirdIf, third],
+  ]);
+
   test("", () => {
-    const firstIf = jest.fn((name) => name === "Fred");
-    const secondIf = jest.fn((name) => name === "Anna");
-    const thirdIf = jest.fn((name) => name === "Brut");
-
-    const first = jest.fn((name) => `Hello, admin Fred`);
-    const second = jest.fn((name) => `Hello, wife Anna`);
-    const third = jest.fn((name) => `Hello, fucking Freak`);
-
-    const run = cond([
-      [firstIf, first],
-      [secondIf, second],
-      [thirdIf, third],
-    ]);
-
     const res = run("Anna");
 
     expect(firstIf).toHaveBeenCalledTimes(1);
@@ -69,6 +69,16 @@ describe("cond", () => {
     expect(third).toHaveBeenCalledTimes(0);
 
     expect(res).toEqual("Hello, wife Anna");
+  });
+
+  test("If no one condition matched - we get exception", () => {
+    try {
+      const res = run("Sveta");
+
+      expect(true).toEqual(false);
+    } catch (err: any) {
+      expect(err.message).toEqual("No one matched in conditions...");
+    }
   });
 });
 

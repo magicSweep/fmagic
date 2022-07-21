@@ -1,6 +1,5 @@
-import { downloadPhotoUrl } from "../config";
-
 export const makeDownloadPhotoUrl = (
+  downloadPhotoUrl: string,
   googleDriveId: string,
   imageExtention: string
 ) => {

@@ -9,12 +9,14 @@ export const compose =
 
 export const cond =
   <T, U>(conditions: any[]) =>
-  (val?: T): U | undefined => {
+  (val?: T): U => {
     for (let i = 0; i < conditions.length; i++) {
       if (conditions[i][0](val) === true) {
         return conditions[i][1](val);
       }
     }
+
+    throw new Error("No one matched in conditions...");
   };
 
 export const elif =

@@ -10,7 +10,7 @@ const config: Config.InitialOptions = {
     /*  "\\.(css)$": "<rootDir>/node_modules/identity-obj-proxy",
     "^.+\\.module\\.(css|sass|scss)$":
       "<rootDir>/node_modules/identity-obj-proxy", */
-    "^lodash-es(.*)$": "<rootDir>/node_modules/lodash",
+    "^lodash-es(.*)$": "lodash",
   },
 
   roots: ["<rootDir>/src"],
